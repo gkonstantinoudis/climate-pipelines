@@ -1,7 +1,4 @@
----
-title: "Read me"
-author: Garyfallos Konstantinoudis
----
+# Read me
 
 The number in front of the file name indicates the sequence to run the files. If they have the same number, it does not matter which file you run first. Please note that before every R code you need to set your working directory, for instance:
 
