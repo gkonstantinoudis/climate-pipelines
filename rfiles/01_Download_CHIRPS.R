@@ -34,7 +34,7 @@ chirps_data <- get_chirps(lonlat,
                           server = "CHC", 
                           as.matrix = TRUE)
 t_1 <- Sys.time()
-t_1 - t_0
+t_1 - t_0 # 30 minutes
 
 chirps_data <- cbind(lonlat, chirps_data)
 
@@ -69,6 +69,7 @@ data_long %>%
     date=date
   ) %>% 
   select(x, y, CHIRPS_rainfall_sum, date) -> data_long
+
 
 saveRDS(data_long, file = paste0("Output/Summary_CHIRPS_rainfall_sum.rds"))
 

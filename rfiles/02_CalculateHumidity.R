@@ -19,8 +19,8 @@ library(terra)
 # function to retrieve daily statistic
 DailyStat <- function(start, stop, datenam, metric, d = d){
   
-    d_stat <- cbind(d[,c(1:2)], d[,-c(1:2)][,start:stop] %>% apply(., 1, mean))
-    colnames(d_stat)[3] <- metric
+  d_stat <- cbind(d[,c(1:2)], d[,-c(1:2)][,start:stop] %>% apply(., 1, mean))
+  colnames(d_stat)[3] <- metric
   
   d_stat$date <- datenam
   
@@ -28,24 +28,22 @@ DailyStat <- function(start, stop, datenam, metric, d = d){
 }
 
 # extract the data
-Extract <- function(Z, stat){
+Extract <- function(Z, Cel = FALSE){
   
   d <- as.data.frame(Z, xy=TRUE)
-  d[,-c(1:2)] <- d[,-c(1:2)] - 273.15
+  
+  if(Cel == TRUE){
+    d[,-c(1:2)] <- d[,-c(1:2)] - 273.15
+  }else{
+    d <- d
+  }
   
   hour_tr <- terra::time(Z)
   hour_tr <- format(hour_tr, format='%Y-%m-%d', tz = "Asia/Colombo")
-  TakeMonth <- month(hour_tr) == month(hour_tr)[1]
-  hour_tr <- hour_tr[TakeMonth]
+  colnames(d)[-c(1:2)] <- hour_tr
   
-  d <- cbind(d[,c(1:2)], d[,-c(1:2)][,TakeMonth])
-  colnames(d)[-c(1:2)] <- hour_tr[TakeMonth]
-  
-  GetStat <- d
-  return(GetStat)
+  return(d)
 }
-
-
 
 
 ##
@@ -55,7 +53,7 @@ files2read <- list.files()[list.files() %>% startsWith(.,"2m_temperature")]
 meteo_extract <- lapply(files2read, terra::rast) 
 
 t_0 <- Sys.time()
-res_temperature <- lapply(meteo_extract, function(Z) Extract(Z = Z, stat = stat))
+res_temperature <- lapply(meteo_extract, function(Z) Extract(Z = Z, Cel = TRUE))
 t_1 <- Sys.time()
 t_1 - t_0 # less than a minute
 
@@ -69,7 +67,7 @@ files2read <- list.files()[list.files() %>% startsWith(.,"2m_dewpoint_temperatur
 meteo_extract <- lapply(files2read, terra::rast) 
 
 t_0 <- Sys.time()
-res_temperatureDP <- lapply(meteo_extract, function(Z) Extract(Z = Z, stat = stat))
+res_temperatureDP <- lapply(meteo_extract, function(Z) Extract(Z = Z, Cel = TRUE))
 t_1 <- Sys.time()
 t_1 - t_0 # less than a minute
 
@@ -84,7 +82,7 @@ files2read <- list.files()[list.files() %>% startsWith(.,"surface_pressure")]
 meteo_extract <- lapply(files2read, terra::rast) 
 
 t_0 <- Sys.time()
-res_pressure <- lapply(meteo_extract, function(Z) Extract(Z = Z, stat = stat))
+res_pressure <- lapply(meteo_extract, function(Z) Extract(Z = Z))
 t_1 <- Sys.time()
 t_1 - t_0 # less than a minute
 

@@ -28,11 +28,14 @@ f <- wpgpGetCountryDataset(ISO3 = iso3, covariate = cov, destDir = "Output/")
 pop <- terra::rast(f)
 terra::plot(pop)
 
+pop_ag <- terra::aggregate(pop, fact = 90, fun = "sum", na.rm = TRUE)
+terra::plot(pop_ag)
+# fact is an aggregation factor expressed as number of cells in each direction 
+# this ensure that the population and meteorology are more or less on the same dimension
+# pop <- as.data.frame(pop, xy=TRUE)
+# summary(pop)
 
-pop <- as.data.frame(pop, xy=TRUE)
-summary(pop)
-
-saveRDS(pop, file = paste0("Output/population_", year))
+saveRDS(pop_ag, file = paste0("Output/population_", year))
 
 
 
