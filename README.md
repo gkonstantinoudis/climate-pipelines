@@ -1,14 +1,6 @@
 ---
 title: "Read me"
-author: "Garyfallos Konstantinoudis"
-output:
-  html_document:
-    toc: true
-    toc_float:
-      collapsed: false
-      smooth_scroll: false
-  pdf_document:
-    toc: true
+author: Garyfallos Konstantinoudis
 ---
 
 The number in front of the file name indicates the sequence to run the files. If they have the same number, it does not matter which file you run first. Please note that before every R code you need to set your working directory, for instance:
