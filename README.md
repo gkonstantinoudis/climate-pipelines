@@ -14,6 +14,8 @@ The r-files folder includes r-files to download and wrangle meteorological covar
 
 ### ERA-5 download
 
+ERA5-Land is produced by the European Centre for Medium-Range Weather Forecasts (ECMWF) and made available through the Climate Data Store (CDS). It provides hourly data from 1950 onwards, covering all days of the year at the 9km spatial resolution.
+
 To download ERA-5, one needs to create an account [here](https://cds.climate.copernicus.eu/).
 
 Once you have successfully **created** and **activated** your account, you need to accept the terms of the dataset you are planning to download. For instance, if you are interested on ERA-5 land, go [here](https://cds.climate.copernicus.eu/datasets/reanalysis-era5-land?tab=download), scroll down to Terms of use and select accept.
@@ -34,7 +36,7 @@ ERA-5 has limits on the size and the number of your requests. The code automatic
 
 You need to define a metric:
 
-``` R
+``` r
 {r}
 metric <- "surface_pressure"
 # c("2m_temperature", "total_precipitation", "2m_dewpoint_temperature", "surface_pressure")
@@ -42,7 +44,7 @@ metric <- "surface_pressure"
 
 and the years:
 
-``` R
+``` r
 {r}
 year <- 2017:2024
 ```
@@ -51,7 +53,7 @@ This file also create an *Output* folder in your working directory, in which all
 
 It is likely that with the above specification, you will also encounter issues with download limits. The second part of the code on the file *01_Download_ERA5.R* reads as:
 
-``` R
+``` r
 ### SECOND PART OF CODE, RUN IF THE DOWNLOAD LIMITS ARE MET
 LIMITS = FALSE
 ```
@@ -60,7 +62,7 @@ If the first part of code fails because of this error, then set \`LIMITS = FALSE
 
 If you have downloaded all the data, cleaned it and run everything once, you might need to download the files for the updated period. To do so you need to set `update=TRUE` and define the dates to update based on the following format:
 
-``` R
+``` r
 ###
 # THIS IS IF YOU WANT TO UPDATE THE FILES WITH NEWER DATA
 update = TRUE
@@ -71,9 +73,11 @@ newdates <- "2025-03-01/2025-03-31"
 
 ### CHIRPS download
 
+CHIRPS-2.0 (Climate Hazards Group InfraRed Precipitation with Station data) is provided by the Climate Hazards Center. It combines satellite imagery with in-situ station data to rainfall estimates at 5.5km spatial resolution.
+
 To download CHIPRS data, you also need to specify start and end data, and a bounding box. The bounding box is defined in a similar way as in the ERA-5 example for Sri Lanka:
 
-``` R
+``` r
 # Define the start and end date for the data
 start_date <- "2017-01-01"
 end_date <- "2024-12-31"
@@ -116,7 +120,7 @@ Both of humidities are calculated hourly and then the code retrieves the daily m
 
 The file *02_CleanMeteorology.R* cleans the ERA-5 datasets that do not need to be combined (for instance temperature). This file extracts the hourly varaible and retrieves on of the following statistics: mean, min, max and sum, depending on what we are interested in. For example, if you are interested in the maximum daily temperature then you need to set the following:
 
-``` R
+``` r
 # define the metric
 metric <- "2m_temperature"
 
@@ -130,7 +134,7 @@ The results from calculating humidity and meteorology cleaning are stored in the
 
 Most of the times, the outcome and exposure data are temporally (and spatially see Shapefile aggregation section) misaligned. An example for this misalignment is when the outcome data is available at the weekly level, whereas the exposure at the daily level. The file *03_CalculateTemporalStat.R* allows you to select the temporal aggregation for the exposure and takes the mean (or sum which could be relevant for rainfall) per temporal unit. For instance if you want to retrieve the weekly maximum temperature, this file will take the daily maximum temperatures, define a week-definition (ise, epi or your own) and calculates the weekly mean of the daily maximum temperatures:
 
-``` R
+``` r
 # read meteorology
 # define the metric
 metric <- "2m_temperature"
@@ -142,13 +146,13 @@ stat <- "max"
 
 The code defines the function `TemporalStat()`. If you want the mean weekly max isoweek temperatures then set:
 
-``` R
+``` r
 TemporalStat(temporal = "weekly", weekly_stat = "mean", week_type = "isoweek")
 ```
 
 You can specify other arguments in you function for instance:
 
-``` R
+``` r
 temporal <- "daily", "weekly", "monthly" and "yearly"
 weekly_stat <- "mean" or "sum"
 week_type <- "epiweek" or "isoweek" or "another"
@@ -156,7 +160,7 @@ week_type <- "epiweek" or "isoweek" or "another"
 
 and if you select `week_type <- "another"` you need to provide a path with your csv file that defines the weeks in the following format:
 
-``` R
+``` r
 # wweek yyear       date
 # 1     1  2000 1999-12-27
 # 2     1  2000 1999-12-28
@@ -168,7 +172,7 @@ and if you select `week_type <- "another"` you need to provide a path with your 
 
 and then:
 
-``` R
+``` r
 dat_date <- "C:/Users/gkonstan/OneDrive - Imperial College London/meteo_sri_lanka/data/LinkTimeDateClean.csv"
 
 meteo <- TemporalStat(temporal = "weekly", weekly_stat = "mean", week_type = "another", dat_date = dat_date)
@@ -184,9 +188,7 @@ SummaryTemporal_2m_temperature_max.rds
 
 Spatial misalignment between the outcome and the exposure is because the exposure is available at a grid level, whereas the health outcome data, at some administrative level. For instance the temperature from ERA-5 is available at 9km grid resolution (pixels in Kelvin), whereas health data is available at the province level:
 
-<p align="center">
-  <img src="assets/temp.png" width="400"/>
-</p>
+<p align="center"><img src="assets/temp.png" width="400"/></p>
 
 To account for the spatial misalignment between the outcome and the exposure the code applies population weights on the covariates and aggregate per shapefile.
 
@@ -196,54 +198,44 @@ Both population and shapefiles are stored in the *Output* folder.
 
 The file *04_DownloadPopulation.R* downloads the population from the [WorldPop](https://www.worldpop.org/) at 100m resolution. You need to set the **country** and the **year** of interest:
 
-``` R
+``` r
 # set the country code
 iso3 <- "LKA"
 # set the year
 year <- 2020
 ```
 
-<p align="center">
-  <img src="assets/pop.png" width="400"/>
-</p>
-
+<p align="center"><img src="assets/pop.png" width="400"/></p>
 
 I aggregated the population to a grid compatible with the meteorological covariates (i.e., 9km grid)
-<p align="center">
-  <img src="assets/pop_ag.png" width="400"/>
-</p>
 
+<p align="center"><img src="assets/pop_ag.png" width="400"/></p>
 
 ### Download the shapefiles
 
+The Global Administrative Areas Database (GADM) provides spatial data for all countries and their subdivisions. 
+
 The file *04_DownloadShapefile.R* downloads the shapefile for [GADM](https://gadm.org/). You need to specify the country code:
 
-``` R
+``` r
 country_code <- "LKA" 
 ```
 
 and the code downloads level 0, 1 and 2:
 
-<p align="center">
-  <img src="assets/shapefiles.png" width="1000"/>
-</p>
+<p align="center"><img src="assets/shapefiles.png" width="1000"/></p>
 
 ### Bring together
 
 To bring together, you will need to run 3 R files: *05_AssignPopWeights.R*, *06_AggregateShapefile.R* and *07_BringTogether.R*
 
-The population is available at 100m grid, whereas the ERA-5 (for instance) at 9km. The file *05_AssignPopWeights.R*, extract the values of the coarses population raster (9km grid) on the centroids of the 9km ERA-5 grid (for instance). 
+The population is available at 100m grid, whereas the ERA-5 (for instance) at 9km. The file *05_AssignPopWeights.R*, extract the values of the coarser population raster (9km grid) on the centroids of the 9km ERA-5 grid (for instance). This file has a second part which is a more elaborate assignment between population and expousre, using year-specific population weights.
 
-<p align="center">
-  <img src="assets/erapop.png" width="400"/>
-</p>
-
+<p align="center"><img src="assets/erapop.png" width="400"/></p>
 
 The file *06_AggregateShapefile.R* takes the results of the *05_AssignPopWeights.R,* which is for example temperature and population sums at 9km (ERA-5), and overlays the grid to the selected shapefile:
 
-<p align="center">
-  <img src="assets/Aggshp.png" width="400"/>
-</p>
+<p align="center"><img src="assets/Aggshp.png" width="400"/></p>
 
 and then the code calculates the population weighted mean.
 
@@ -255,15 +247,13 @@ where $i$ is the spatial unit and $j\sim i$ are the points of the $j$-th grid ce
 
 Note that this procedure might now work when the shapefile is more refined:
 
-<p align="center">
-  <img src="assets/Aggshp2.png" width="400"/>
-</p>
+<p align="center"><img src="assets/Aggshp2.png" width="400"/></p>
 
 In this example, there are regions which do not overlap with the coarse grid. In this case, the code checks if there are NAs and imputes them with the nearest exposure value.
 
 The file *07_BringTogether.R*, brings together the different exposures ready to be linked with the health outcome data. The format is the following:
 
-``` R
+``` r
 fin <- readRDS(file = "Output/PopulationWeightedMeteorology_Level1.rds")
 head(fin)
 ```
