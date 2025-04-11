@@ -253,7 +253,29 @@ In this example, there are regions which do not overlap with the coarse grid. In
 
 The file *07_BringTogether.R*, brings together the different exposures ready to be linked with the health outcome data. The format is the following:
 
-``` r
+```R
 fin <- readRDS(file = "Output/PopulationWeightedMeteorology_Level1.rds")
 head(fin)
+
+    NAME      dates Popweighted_2m_temperature_max_level_1 Popweighted_2m_temperature_mean_level_1
+1 Ampara 2017-01-01                               27.48683                                24.99122
+2 Ampara 2017-01-02                               27.66497                                24.58829
+3 Ampara 2017-01-09                               28.04452                                24.59119
+4 Ampara 2017-01-16                               27.21880                                24.74317
+5 Ampara 2017-01-23                               26.55362                                24.64316
+6 Ampara 2017-01-30                               27.25251                                24.46651
+  Popweighted_2m_temperature_min_level_1 Popweighted_CHIRPS_rainfall_sum_level_1
+1                               23.27400                               8.6323718
+2                               22.22119                               0.4530619
+3                               21.28730                               0.0000000
+4                               22.80904                               3.3319643
+5                               23.28036                              23.7075799
+6                               21.99123                               0.0000000
+  Popweighted_relative_humidity_mean_level_1 Popweighted_specific_humidity_mean_level_1
+1                                   88.11018                               0.0001722132
+2                                   76.82895                               0.0001459499
+3                                   72.81013                               0.0001373441
+4                                   78.07762                               0.0001496478
+5                                   90.38791                               0.0001729847
+6                                   75.66269                               0.0001424914
 ```
