@@ -7,7 +7,7 @@
 
 library(tidyverse)
 
-wd <- "C:/Users/gkonstan/OneDrive - Imperial College London/meteo_sri_lanka/"
+wd <- "C:/Users/gkonstan/OneDrive - Imperial College London/ICRF Imperial/Projects/climate-pipelines/"
 setwd(paste0(wd, "Output/"))
 
 metric <- c("2m_temperature", "total_precipitation", "2m_dewpoint_temperature", 

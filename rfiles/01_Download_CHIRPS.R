@@ -12,8 +12,11 @@ library(tidyverse)
 library(tidyr)
 
 # set your working directory
-wd <- "C:/Users/gkonstan/OneDrive - Imperial College London/meteo_sri_lanka/"
+wd <- "C:/Users/gkonstan/OneDrive - Imperial College London/ICRF Imperial/Projects/climate-pipelines/"
 setwd(wd)
+
+# create a folder Output to store the files
+dir.create(file.path(wd, "Output"))
 
 # Define the start and end date for the data
 start_date <- "2017-01-01"

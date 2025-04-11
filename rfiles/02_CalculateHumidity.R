@@ -8,7 +8,7 @@
 
 
 # set wd
-wd <- "C:/Users/gkonstan/OneDrive - Imperial College London/meteo_sri_lanka/"
+wd <- "C:/Users/gkonstan/OneDrive - Imperial College London/ICRF Imperial/Projects/climate-pipelines/"
 setwd(file.path(wd, "Output"))
 
 # libraries

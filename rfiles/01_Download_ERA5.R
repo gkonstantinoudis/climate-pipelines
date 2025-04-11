@@ -9,7 +9,7 @@
 # install.packages(c("tidyverse", "ecmwfr", "parallel"))
 
 # set your working directory
-wd <- "C:/Users/gkonstan/OneDrive - Imperial College London/meteo_sri_lanka/"
+wd <- "C:/Users/gkonstan/OneDrive - Imperial College London/ICRF Imperial/Projects/climate-pipelines/"
 setwd(wd)
 
 # create a folder Output to store the files

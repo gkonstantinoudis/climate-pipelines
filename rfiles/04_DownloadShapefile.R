@@ -6,7 +6,7 @@
 #-------------------------------------------------------------------------------
 
 # set path
-path <- "C:/Users/gkonstan/OneDrive - Imperial College London/meteo_sri_lanka"
+path <- "C:/Users/gkonstan/OneDrive - Imperial College London/ICRF Imperial/Projects/climate-pipelines/"
 setwd(path)
 
 # libraries
