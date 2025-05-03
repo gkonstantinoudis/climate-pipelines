@@ -156,7 +156,7 @@ SHP_aggregation <- function(metric, stat, level, shp_string = NULL, plot = F, st
     print(
       # time
       (ggplot() + 
-         geom_line(data = meteo_weighted, aes(x = dates, y = variable, col = NAME), alpha = 0.5) + 
+         geom_line(data = meteo_weighted, aes(x = dates, y = variable, group = NAME, col = NAME), alpha = 0.5) + 
          theme(legend.position = "none"))| 
         
         # space
