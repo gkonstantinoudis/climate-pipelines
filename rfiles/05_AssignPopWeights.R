@@ -163,27 +163,27 @@ if(multiple_years == TRUE){
   
   list_2m_temperature_mean <- do.call(rbind, list_2m_temperature_mean)
   metric = "2m_temperature"; stat = "mean"
-  saveRDS(meteo, file = paste0("Output/Popweighted_Summary_", metric, "_", stat, year, ".rds"))
+  saveRDS(list_2m_temperature_mean, file = paste0("Output/Popweighted_Summary_", metric, "_", stat, ".rds"))
   
   list_2m_temperature_min <- do.call(rbind, list_2m_temperature_min)
   metric = "2m_temperature"; stat = "min"
-  saveRDS(meteo, file = paste0("Output/Popweighted_Summary_", metric, "_", stat, year, ".rds"))
+  saveRDS(list_2m_temperature_min, file = paste0("Output/Popweighted_Summary_", metric, "_", stat, ".rds"))
   
   list_2m_temperature_max <- do.call(rbind, list_2m_temperature_max)
   metric = "2m_temperature"; stat = "max"
-  saveRDS(meteo, file = paste0("Output/Popweighted_Summary_", metric, "_", stat, year, ".rds"))
+  saveRDS(list_2m_temperature_max, file = paste0("Output/Popweighted_Summary_", metric, "_", stat, ".rds"))
   
   metric = "specific_humidity"; stat = "mean"
   list_specific_humidity_mean <- do.call(rbind, list_specific_humidity_mean)
-  saveRDS(meteo, file = paste0("Output/Popweighted_Summary_", metric, "_", stat, year, ".rds"))
+  saveRDS(list_specific_humidity_mean, file = paste0("Output/Popweighted_Summary_", metric, "_", stat, ".rds"))
   
   list_relative_humidity_mean <- do.call(rbind, list_relative_humidity_mean)
   metric = "relative_humidity"; stat = "mean"
-  saveRDS(meteo, file = paste0("Output/Popweighted_Summary_", metric, "_", stat, year, ".rds"))
+  saveRDS(list_relative_humidity_mean, file = paste0("Output/Popweighted_Summary_", metric, "_", stat,  ".rds"))
   
   list_CHIRPS_rainfall_sum <- do.call(rbind, list_CHIRPS_rainfall_sum)
   metric = "CHIRPS_rainfall"; stat = "sum"
-  saveRDS(meteo, file = paste0("Output/Popweighted_Summary_", metric, "_", stat, year, ".rds"))
+  saveRDS(list_CHIRPS_rainfall_sum, file = paste0("Output/Popweighted_Summary_", metric, "_", stat, ".rds"))
   
   rm(list = ls())
   dev.off()
