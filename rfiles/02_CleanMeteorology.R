@@ -49,7 +49,7 @@ ExtractDailyStat <- function(Z, stat, metric, dailystat = TRUE){
   d <- as.data.frame(Z, xy=TRUE)
   d[,-c(1:2)] <- d[,-c(1:2)] - 273.15
   
-  hour_tr <- terra::time(Z)
+  hour_tr <- as.POSIXct(sub(".*=", "", colnames(d)[-c(1:2)]) %>% as.numeric(), origin = "1970-01-01")
   hour_tr <- format(hour_tr, format='%Y-%m-%d', tz = "Asia/Colombo")
   
   if(dailystat == TRUE){
