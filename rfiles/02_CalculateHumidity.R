@@ -38,8 +38,9 @@ Extract <- function(Z, Cel = FALSE){
     d <- d
   }
   
-  hour_tr <- terra::time(Z)
+  hour_tr <- as.POSIXct(sub(".*=", "", colnames(d)[-c(1:2)]) %>% as.numeric(), origin = "1970-01-01")
   hour_tr <- format(hour_tr, format='%Y-%m-%d', tz = "Asia/Colombo")
+  
   colnames(d)[-c(1:2)] <- hour_tr
   
   return(d)
